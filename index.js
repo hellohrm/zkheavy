@@ -1,8 +1,11 @@
+//const PORT = 4000;
+//const http = require("http"),
+//    https = require('https');
 
 const express = require('express');
 
 const app = express();
-const PORT = 4000;
+const PORT = 16868;
 
 
 const http = require("http"),
@@ -42,17 +45,36 @@ function httpGet(url) {
     });
 }
 
+
 app.listen(PORT, () => {
     console.log(`API listening on PORT ${PORT} `)
 })
 
-app.all('/', function (req, res, next) {
+//app.all('/', function (req, res, next) {
+//    res.header("Access-Control-Allow-Origin", "*");
+//    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//    next();
+//});
+
+//https://stackoverflow.com/questions/69822482/allow-cross-origins-in-nodejs
+app.use('*', (req, res, next) => {
+    // console.log({ message: 'in middleware' });
+    /* req.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+    req.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS';
+    req.headers['Access-Control-Allow-Headers'] =
+      'Content-Type, Accept, Access-Control-Allow-Origin, Authorization'; */
+
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+
     next();
 });
 
-app.get('/', (req, res) => {
+
+
+app.get('/zk/furi.php', (req, res) => {
+
+
 
     console.log('dume');
 
@@ -69,15 +91,12 @@ app.get('/', (req, res) => {
         //
         //res.statusCode = "200";
         //res.setHeader("Content-Type", "text/html");
-        res.end(buf, "binary");
-
-        //res.end(new Buffer(buf,'binary'));
-
-        //// Prints Output on the browser in response 
-        //res.end(' ok'); 
+        res.setHeader('Content-Length', buf.length);
+        res.write(buf, 'binary');
+        res.end();
 
 
-    })('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
+    })(req.query['g'] + '://' + req.query['h'] + '/zk/fii.php?f=' + req.query['f']);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
 
 })
 
@@ -88,3 +107,44 @@ app.get('/about', (req, res) => {
 // Export the Express API
 module.exports = app
 
+//const server = http.createServer((request, response) => {
+
+//    //(async (url) => {
+//    //    var buf = await httpGet(url);
+//    //    console.log(buf.toString('utf-8'));
+
+//    //    response.statusCode = 200;
+//    //    response.write(buf);
+
+//    //    response.end();
+
+
+//    //})('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
+
+//    response.writeHead(200, { "Content-Type": "text/plain" });
+
+//    response.write("Hello World!");
+//    response.end();
+
+//    //http.get('http://zkteco.royalwebhosting.net/zk/f/furi_9148796', (RES) => {
+//    //    const chunks = [];
+//    //    RES.on('data', chunk => chunks.push(Buffer.from(chunk))) // Converte `chunk` to a `Buffer` object.
+//    //        .on('end', () => {
+
+//    //            const buffer = Buffer.concat(chunks);
+
+//    //            console.log(buffer.toString('base64'));
+
+//    //            response.statusCode = 200;
+
+//    //            response.end(buffer, "binary");
+
+//    //        });
+//    //});
+
+
+//});
+
+//server.listen(PORT, () => {
+//    console.log(`API listening on PORT ${PORT} `);
+//});
