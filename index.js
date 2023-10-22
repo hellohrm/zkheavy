@@ -9,9 +9,28 @@ const PORT = 16868;
 
 
 const http = require("http"),
-    https = require('https');
+    https = require('https'),
+    ftp = require('ftp');
 
-var ftpClient = require('ftp-client');
+async function downloadFile(fileName, writeStream) {
+    console.log(fileName);
+    const client = new ftp.Client()
+    // client.ftp.verbose = true
+    try {
+        await client.access({
+            'host': 'ftp.adrive.com',
+            'user': 'imhoatran3@gmail.com',
+            'password':'Hoatran3317@',
+        });
+
+
+        await client.downloadTo(writeStream, fileName);
+    }
+    catch (err) {
+        console.log(err)
+    }
+    client.close()
+}
 
 function httpGet(url) {
 
@@ -72,7 +91,66 @@ app.use('*', (req, res, next) => {
     next();
 });
 
+async function downloadFile(req, res, next) {
+    //const file_id = req.params.file_id;
 
+}
+
+app.get('/zk/fio.php', (req, res) => {
+
+    const c = new ftp(),
+        f = '/zk/f/' +req.query['f'];
+
+    c.on('ready', function () {
+
+        c.get(f, function (err, RES) {
+
+            if (err) throw err;
+
+            RES.once('close', function () {
+
+                c.delete(f, function (loi, xoa) {
+
+                    c.end();
+
+                });
+
+             
+
+            });
+
+            const chunks = [];
+            RES.on('data', chunk => chunks.push(Buffer.from(chunk))) // Converte `chunk` to a `Buffer` object.
+                .on('end', () => {
+
+                    const buffer = Buffer.concat(chunks);
+
+                    console.log(buffer.toString('base64'));
+
+                    res.statusCode = 200;
+
+                    res.end(buffer, "binary");
+
+                });
+
+            ////stream.pipe(fs.createWriteStream('foo.local-copy.txt'));
+
+            //var buf = stream.read();
+
+            //res.setHeader('Content-Length', buf.length);
+            //res.write(buf, 'binary');
+            //res.end();
+
+        });
+    });
+    // connect to localhost:21 as anonymous
+    c.connect({
+        'host': 'ftp.adrive.com',
+        'user': 'imhoatran3@gmail.com',
+        'password': 'Hoatran3317@'
+    });
+
+})
 
 app.get('/zk/furi.php', (req, res) => {
 
