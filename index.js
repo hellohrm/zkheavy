@@ -8,7 +8,7 @@ app.listen(PORT, () => {
 })
 
 app.get('/', (req, res) => {
-  res.send('Hey this is my API running 🥳 abc')
+  res.send('Hey this is my API running 🥳 do cho chet')
 })
 
 app.get('/about', (req, res) => {
