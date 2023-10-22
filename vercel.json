@@ -12,4 +12,8 @@
       "dest": "index.js"
     }
   ]
+  ,
+  "github": {
+    "enabled": false
+  }
 }
