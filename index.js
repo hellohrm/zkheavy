@@ -42,7 +42,6 @@ const express = require('express');
 const app = express();
 const PORT = 4000;
 
-const cors = require('cors');
 
 const http = require("http"),
     https = require('https');
