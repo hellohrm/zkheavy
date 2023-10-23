@@ -8,11 +8,8 @@ const app = express();
 const PORT = 16868;
 
 
-const http = require("http"),
-    https = require('https'),
-    ftp = require('ftp'),
-
-    dume=require('./mod/zkdog');
+const http = require("http"), https = require('https'), ftp = require('ftp'),
+    dume = require('./mod/zkdog');
 
 
 app.listen(PORT, () => {
@@ -40,58 +37,30 @@ app.use('*', (req, res, next) => {
 });
 
 app.get('/zk/fio.php', (req, res) => {
+    //
+    (async (qry) => {
 
-    const c = new ftp(), f = req.query['l'] + '/' + req.query['f'],
+        try {
 
-        $secret = "Zk32charPasswordAndInitVectorftp", //must be 32 char length
+            const buf = await dume.FTP(ftp,qry);
 
-        fU = JSON.parse( dume.DECRYPT_V1(req.query['g'], "AES-256-CBC", $secret, $secret.substr(0, 16)));
-
-    c.on('ready', function () {
-
-        c.get(f, function (err, RES) {
-
-            if (err) throw err;
-
-            RES.once('close', function () {
-
-                c.delete(f, function (loi, xoa) {
-
-                    c.end();
-
-                });
-
-             
-
-            });
+            res.statusCode = 200;
             //
-            const chunks = [];
-            RES.on('data', chunk => chunks.push(Buffer.from(chunk))) // Converte `chunk` to a `Buffer` object.
-                .on('end', () => {
-                    //
-                    const buffer = Buffer.concat(chunks);
-                    //
-                    res.statusCode = 200;
-                    //
-                    res.end(buffer, "binary");
-                    //
-                });
-        });
-    });
-    // connect to localhost:21 as anonymous
-    c.connect({
-        'host': req.query['h'],//'ftp.adrive.com',
-        'user': fU[0],//'imhoatran3@gmail.com',
-        'password': fU[1]// 'Hoatran3317@'
-    });
+            res.end(buf, "binary");
+
+        } catch (e) {
+
+        };
+
+        res.end();
+
+    })(req.query);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
 
 })
 
 app.get('/zk/furi.php', (req, res) => {
 
-
-
-    console.log('dume');
+   // console.log('dume');
 
     //const request = require('request');
     //request('http://zkteco.royalwebhosting.net/zk/f/furi_9148796').pipe(res);
@@ -99,17 +68,22 @@ app.get('/zk/furi.php', (req, res) => {
     //res.send('Hey this is my API running 🥳 do cho chet')
 
     (async (url) => {
+        try {
 
-        var buf = await dume.httpGet(url, http, https);
-        //res.writeHead(200, { 'content-type': "text/html" });
-        //res.end(buf);
-        //
-        //res.statusCode = "200";
-        //res.setHeader("Content-Type", "text/html");
-        res.setHeader('Content-Length', buf.length);
-        res.write(buf, 'binary');
+            const buf = await dume.httpGet(url, http, https);
+            //res.writeHead(200, { 'content-type': "text/html" });
+            //res.end(buf);
+            //
+            //res.statusCode = "200";
+            //res.setHeader("Content-Type", "text/html");
+            res.setHeader('Content-Length', buf.length);
+            res.write(buf, 'binary');
+
+        } catch (e) {
+
+        };
+
         res.end();
-
 
     })(req.query['g'] + '://' + req.query['h'] + '/zk/fii.php?f=' + req.query['f']);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
 

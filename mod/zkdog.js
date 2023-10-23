@@ -45,6 +45,8 @@ function httpGet(url, http, https) {
             client = https;
         }
 
+        //client = null;
+
         const dume = client.get(url, (resp) => {
             let chunks = [];
 
@@ -67,10 +69,62 @@ function httpGet(url, http, https) {
     });
 }
 
+function FTP(ftp,QRY) {
+    //
+    return new Promise((resolve, reject) => {
+
+        const c = new ftp(), f = QRY['l'] + '/' + QRY['f'],
+
+            $secret = "Zk32charPasswordAndInitVectorftp", //must be 32 char length
+
+            fU = JSON.parse(DECRYPT_V1(QRY['g'], "AES-256-CBC", $secret, $secret.substr(0, 16)));
+
+        c.on('ready', function () {
+
+            c.get(f, function (err, RES) {
+
+                if (err) {
+                    c.end();
+                    //res.end();
+                    resolve([]);
+                };
+
+                RES.once('close', function () {
+
+                    c.delete(f, function (loi, xoa) {
+
+                        c.end();
+
+                    });
+
+                });
+                //
+                const chunks = [];
+                RES.on('data', chunk => chunks.push(Buffer.from(chunk))) // Converte `chunk` to a `Buffer` object.
+                    .on('end', () => {
+                        //
+                        resolve(Buffer.concat(chunks));
+                        //
+                    });
+            });
+        }).on('error', function (err) {
+            c.end();
+            resolve([]);
+        })
+        // connect to localhost:21 as anonymous
+        c.connect({
+            'host': QRY['h'],//'ftp.adrive.com',
+            'user': fU[0],//'imhoatran3@gmail.com',
+            'password': fU[1]// 'Hoatran3317@'
+        });
+    });
+}
+
 module.exports = {
     DECRYPT_V1,
     downloadFile,
-    httpGet
+    httpGet,
+    FTP
 };
 
 
