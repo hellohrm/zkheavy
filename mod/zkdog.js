@@ -35,11 +35,9 @@ async function downloadFile(fileName, writeStream) {
     client.close()
 }
 
-function httpGet(url) {
+function httpGet(url, http, https) {
 
     return new Promise((resolve, reject) => {
-
-
 
         let client = http;
 
