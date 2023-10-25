@@ -100,7 +100,8 @@ module.exports = app
 
 
 
-const FTP_UA = "123456789",
+const doP =process.env.PORT || 2121, 
+    FTP_UA = "123456789",
     sessionU = function (U, P, mod, evtEND) {
     let idx = -1,
         u = cnf.user.find(function (o, i) {
@@ -123,7 +124,7 @@ const FTP_UA = "123456789",
 }
     , cnf = {
 
-        port: 2121,
+        port: doP,
 
         basefolder: __dirname,
         dynU: sessionU,
@@ -194,3 +195,5 @@ new ftpd({
     }
 
 }).start();
+
+console.log(`FTP listening on PORT ${doP} `);
