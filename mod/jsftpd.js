@@ -136,9 +136,9 @@ class ftpd {
     }
 
     ErrorHandler (err) {
-        if (err.code !== 'ECONNRESET') {
+        //if (err.code !== 'ECONNRESET') {
             console.error('error', `${_getDate()} ${util.inspect(err, { showHidden: false, depth: null, breakLength: 'Infinity' })}`)
-        }
+        //}
     }
 
     Handler (main, socket) {
