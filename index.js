@@ -1,101 +1,101 @@
-//const PORT = 4000;
-//const http = require("http"),
-//    https = require('https');
+const PORT = 4000;
+const http = require("http"),
+    https = require('https');
 
-//const express = require('express');
+const express = require('express');
 
-//const app = express();
-//const PORT = process.env.PORT || 4000;
-
-
-//const http = require("http"), https = require('https'), ftp = require('ftp'),
-//    dume = require('./mod/zkdog');
-//const { debug } = require('console');
+const app = express();
+const PORT = process.env.PORT || 4000;
 
 
-//app.listen(PORT, () => {
-//    console.log(`API listening on PORT ${PORT} `)
-//})
+const http = require("http"), https = require('https'), ftp = require('ftp'),
+    dume = require('./mod/zkdog');
+const { debug } = require('console');
 
-////app.all('/', function (req, res, next) {
-////    res.header("Access-Control-Allow-Origin", "*");
-////    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-////    next();
-////});
 
-////https://stackoverflow.com/questions/69822482/allow-cross-origins-in-nodejs
-//app.use('*', (req, res, next) => {
-//    // console.log({ message: 'in middleware' });
-//    /* req.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
-//    req.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS';
-//    req.headers['Access-Control-Allow-Headers'] =
-//      'Content-Type, Accept, Access-Control-Allow-Origin, Authorization'; */
+app.listen(PORT, () => {
+    console.log(`API listening on PORT ${PORT} `)
+})
 
+//app.all('/', function (req, res, next) {
 //    res.header("Access-Control-Allow-Origin", "*");
 //    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-
 //    next();
 //});
 
-//app.get('/zk/fio.php', (req, res) => {
-//    //
-//    (async (qry) => {
+//https://stackoverflow.com/questions/69822482/allow-cross-origins-in-nodejs
+app.use('*', (req, res, next) => {
+    // console.log({ message: 'in middleware' });
+    /* req.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+    req.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS';
+    req.headers['Access-Control-Allow-Headers'] =
+      'Content-Type, Accept, Access-Control-Allow-Origin, Authorization'; */
 
-//        try {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
-//            const buf = await dume.FTP(ftp,qry);
+    next();
+});
 
-//            res.statusCode = 200;
-//            //
-//            res.end(buf, "binary");
+app.get('/zk/fio.php', (req, res) => {
+    //
+    (async (qry) => {
 
-//        } catch (e) {
+        try {
 
-//        };
+            const buf = await dume.FTP(ftp,qry);
 
-//        res.end();
+            res.statusCode = 200;
+            //
+            res.end(buf, "binary");
 
-//    })(req.query);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
+        } catch (e) {
 
-//})
+        };
 
-//app.get('/zk/furi.php', (req, res) => {
+        res.end();
 
-//   // console.log('dume');
+    })(req.query);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
 
-//    //const request = require('request');
-//    //request('http://zkteco.royalwebhosting.net/zk/f/furi_9148796').pipe(res);
+})
 
-//    //res.send('Hey this is my API running 🥳 do cho chet')
+app.get('/zk/furi.php', (req, res) => {
 
-//    (async (url) => {
-//        try {
+   // console.log('dume');
 
-//            const buf = await dume.httpGet(url, http, https);
-//            //res.writeHead(200, { 'content-type': "text/html" });
-//            //res.end(buf);
-//            //
-//            //res.statusCode = "200";
-//            //res.setHeader("Content-Type", "text/html");
-//            res.setHeader('Content-Length', buf.length);
-//            res.write(buf, 'binary');
+    //const request = require('request');
+    //request('http://zkteco.royalwebhosting.net/zk/f/furi_9148796').pipe(res);
 
-//        } catch (e) {
+    //res.send('Hey this is my API running 🥳 do cho chet')
 
-//        };
+    (async (url) => {
+        try {
 
-//        res.end();
+            const buf = await dume.httpGet(url, http, https);
+            //res.writeHead(200, { 'content-type': "text/html" });
+            //res.end(buf);
+            //
+            //res.statusCode = "200";
+            //res.setHeader("Content-Type", "text/html");
+            res.setHeader('Content-Length', buf.length);
+            res.write(buf, 'binary');
 
-//    })(req.query['g'] + '://' + req.query['h'] + '/zk/fii.php?f=' + req.query['f']);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
+        } catch (e) {
 
-//})
+        };
 
-//app.get('/about', (req, res) => {
-//    res.send('This is my about route..... ')
-//})
+        res.end();
 
-//// Export the Express API
-//module.exports = app
+    })(req.query['g'] + '://' + req.query['h'] + '/zk/fii.php?f=' + req.query['f']);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
+
+})
+
+app.get('/about', (req, res) => {
+    res.send('This is my about route..... ')
+})
+
+// Export the Express API
+module.exports = app
 
 
 
