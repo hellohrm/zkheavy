@@ -190,6 +190,7 @@ new ftpd({
     hdl: {
         upload: function (username, relativePath, fileName, data, retrOffset) {
             //debugger;
+            console.log('du me');
             return true;
         }
     }
