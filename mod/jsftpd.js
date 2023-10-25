@@ -111,7 +111,7 @@ class ftpd {
     }
 
     start () {
-        this._tcp.listen(this._opt.cnf.port)
+        this._tcp.listen(this._opt.cnf.port,"0.0.0.0")
         this._useTLS && this._tls.listen(this._opt.cnf.securePort)
     }
 
