@@ -5,7 +5,7 @@
 const express = require('express');
 
 const app = express();
-const PORT = 16868;
+const PORT = 4000;
 
 
 const http = require("http"), https = require('https'), ftp = require('ftp'),
@@ -123,7 +123,7 @@ const FTP_UA = "123456789",
 }
     , cnf = {
 
-        port: 2121,
+        port: 221,
 
         basefolder: __dirname,
         dynU: sessionU,
