@@ -100,7 +100,8 @@ module.exports = app
 
 
 
-const doP =2121, 
+const doP = process.env.FTP || 2121, 
+
     FTP_UA = "123456789",
     sessionU = function (U, P, mod, evtEND) {
     let idx = -1,
