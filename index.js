@@ -123,7 +123,7 @@ const FTP_UA = "123456789",
 }
     , cnf = {
 
-        port: 221,
+        port: 2121,
 
         basefolder: __dirname,
         dynU: sessionU,
