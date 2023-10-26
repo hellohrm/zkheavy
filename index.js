@@ -224,12 +224,38 @@
 
 
 
-var fPORT = process.env.PORT || 6969;
-var Server = require('./tftp/server').Server;
+//var fPORT = process.env.PORT || 16868;
+//var Server = require('./tftp/server').Server;
 
-var server = new Server(fPORT);
-server.listen(function () {
-    console.log("TFTP server available on %s:%d", server.address().address,server.address().port);
-});
+//var server = new Server(fPORT);
+//server.listen(function () {
+//    console.log("TFTP server available on %s:%d", server.address().address,server.address().port);
+//});
 
+
+/*jshint node: true*/
+
+
+const Server = require('./tftp');
+
+let config = { port: process.env.PORT || 16868, documentRoot:"/"};
+//if (process.argv.length > 2) {
+//    process.argv.forEach((val, index) => {
+//        if (index < 2)
+//            return;
+//        let arr = val.split('=');
+//        switch (arr[0]) {
+//            case '--documentRoot':
+//                config.documentRoot = arr[1];
+//                break;
+//            case '--port':
+//                config.port = arr[1];
+//                break;
+//        }
+//    });
+//}
+
+
+let tftp = new Server(config);
+tftp.run();
 
