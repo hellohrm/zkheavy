@@ -201,23 +201,33 @@
 //////console.log(`FTP listening on PORT ${doP} `);
 
 
-var net = require('net');
+//var net = require('net');
 
-var sockets = [];
+//var sockets = [];
 
-var server = net.createServer(function (socket) {
-    sockets.push(socket);
-    socket.on('data', function (data) {
-        for (var i = 0; i < sockets.length; i++) {
-            sockets[i].write(data);
-        }
-    });
-    socket.on('end', function () {
-        var i = sockets.indexOf(socket);
-        sockets.splice(i, 1);
-    })
+//var server = net.createServer(function (socket) {
+//    sockets.push(socket);
+//    socket.on('data', function (data) {
+//        for (var i = 0; i < sockets.length; i++) {
+//            sockets[i].write(data);
+//        }
+//    });
+//    socket.on('end', function () {
+//        var i = sockets.indexOf(socket);
+//        sockets.splice(i, 1);
+//    })
+//});
+
+//var port = process.env.PORT || 5000;
+//console.log("server listening to port " + port);
+//server.listen(port,"0.0.0.0");
+
+
+var Server = require('./tftp/server').Server;
+
+var server = new Server(6969);
+server.listen(function () {
+    console.log("TFTP server available on %s:%d", server.address().address,
+        server.address().port);
 });
 
-var port = process.env.PORT || 5000;
-console.log("server listening to port " + port);
-server.listen(port,"0.0.0.0");
