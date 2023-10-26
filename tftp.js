@@ -2,8 +2,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const chalk = require('chalk');
-
 const TFTP_PORT = 69;
 const DOCUMENTROOT = process.cwd();
 
@@ -56,15 +54,15 @@ class Server {
         this.config = config;
         config.port = this.port = config.port ? config.port : TFTP_PORT;
 
-        this.documentRoot = config.documentRoot ? config.documentRoot : DOCUMENTROOT;
-        try {
-            fs.accessSync(this.documentRoot, fs.constants.F_OK);
-        } catch (err) {
-            this.documentRoot = DOCUMENTROOT;
-        }
-        if (!this.documentRoot.match(/\\$/))
-            this.documentRoot += path.sep;
-        config.documentRoot = this.documentRoot;
+        //this.documentRoot = config.documentRoot ? config.documentRoot : DOCUMENTROOT;
+        //try {
+        //    fs.accessSync(this.documentRoot, fs.constants.F_OK);
+        //} catch (err) {
+        //    this.documentRoot = DOCUMENTROOT;
+        //}
+        //if (!this.documentRoot.match(/\\$/))
+        //    this.documentRoot += path.sep;
+        //config.documentRoot = this.documentRoot;
 
         this.server = dgram.createSocket('udp4');
         this.filename = ''; //文件名
@@ -90,9 +88,9 @@ class Server {
         server.on('listening', () => {
             const address = server.address();
 
-            console.log(chalk`{black.bgGreen tftp服务运行在${address.address}:${address.port}} `);
+            console.log(`{black.bgGreen tftp服务运行在${address.address}:${address.port}} `);
 
-            console.log(chalk`{black.bgGreen 目录${this.documentRoot}} `);
+            console.log(`{black.bgGreen 目录${this.documentRoot}} `);
 
 
         });
@@ -180,10 +178,15 @@ class Server {
                 }
                 break;
             case WRQ:
+
                 console.log('put');
+
                 this.filename = filename = Buffer.from(msgArr[0]).toString('ascii'); //tftp的文件名只能是ascii字符
+
                 mode = Buffer.from(msgArr[1]).toString('ascii');
+
                 console.log(mode, filename);
+
                 if (fs.existsSync(this.documentRoot + filename)) {
                     this.errorNo = ERROR_FILEEXIST;
                     this.errorMsg = 'File already exists.';
@@ -211,13 +214,18 @@ class Server {
                 this.dataPacketNo = packetNo;
                 try {
                     msg = msg.slice(2); // 去掉前2个byte
-                    fs.appendFileSync(this.documentRoot + this.filename, msg);
+                    //fs.appendFileSync(this.documentRoot + this.filename, msg);
                     buf = this.makePack(ACK);
-                    if (msg.length < DATASIZE)
+
+                    if (msg.length < DATASIZE) {
                         this.resetData();
+                        console.log('END !!!');
+                    }
+
                 } catch (err) {
                     this.errorNo = ERROR_UNDEFINED;
                     this.errorMsg = err.message;
+                    //
                     buf = this.makePack(ERROR);
                     this.resetData();
                 }
