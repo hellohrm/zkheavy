@@ -1,9 +1,9 @@
 ﻿const dgram = require('dgram');
 const fs = require('fs');
-const path = require('path');
+//const path = require('path');
 
 const TFTP_PORT = 69;
-const DOCUMENTROOT = process.cwd();
+//const DOCUMENTROOT = process.cwd();
 
 /**
  * WRQ和DATA包由ACK或ERROR数据包确认，RRQ包由DATA或ERROR数据包确认
