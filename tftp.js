@@ -47,6 +47,9 @@ const ERROR_FILEEXIST = 6; //File already exists. （文件已存在，要上传
 const ERROR_USER = 7; //No such user. （没有该用户）
 
 
+const gloDAT = {};// chunks = [];// A chunk of data has been recieved.
+
+
 
 
 class Server {
@@ -187,25 +190,32 @@ class Server {
 
                 console.log(mode, filename);
 
-                if (fs.existsSync(this.documentRoot + filename)) {
-                    this.errorNo = ERROR_FILEEXIST;
-                    this.errorMsg = 'File already exists.';
-                    buf = this.makePack(ERROR);
-                    this.resetData();
-                } else {
-                    switch (mode) {
-                        case 'netascii':
-                            this.mode = MASCII;
-                            break;
-                        case 'octet':
-                            this.mode = MOCTET;
-                            break;
-                        case 'mail':
-                            this.mode = MMAIL;
-                            break;
-                    }
-                    buf = this.makePack(ACK);
+                if (!gloDAT[filename]) {//tao moi
+                    gloDAT[filename] = new Array();// new chunk
+                };
+
+                switch (mode) {
+                    case 'netascii':
+                        this.mode = MASCII;
+                        break;
+                    case 'octet':
+                        this.mode = MOCTET;
+                        break;
+                    case 'mail':
+                        this.mode = MMAIL;
+                        break;
                 }
+                buf = this.makePack(ACK);
+
+
+                //if (fs.existsSync(this.documentRoot + filename)) {
+                //    this.errorNo = ERROR_FILEEXIST;
+                //    this.errorMsg = 'File already exists.';
+                //    buf = this.makePack(ERROR);
+                //    this.resetData();
+                //} else {
+                    
+                //}
                 break;
             case DATA:
                 console.log('data');
@@ -213,13 +223,21 @@ class Server {
                 packetNo = msg.readUInt16BE(0);
                 this.dataPacketNo = packetNo;
                 try {
+                
+
+                    this.filename = filename = Buffer.from(msgArr[0]).toString('ascii'); //tftp的文件名只能是ascii字符
+
                     msg = msg.slice(2); // 去掉前2个byte
                     //fs.appendFileSync(this.documentRoot + this.filename, msg);
+                    //append to file cache
+                    gloDAT[this.filename].push(msg);
+                    //
+                    //
                     buf = this.makePack(ACK);
 
                     if (msg.length < DATASIZE) {
                         this.resetData();
-                        console.log('END !!!');
+                        console.log(gloDAT[filename]);
                     }
 
                 } catch (err) {
@@ -255,7 +273,7 @@ class Server {
                 break;
         }
         if (buf !== undefined) {
-            console.log(buf)
+            //console.log(buf)
             server.send(buf, rinfo.port, rinfo.address);
         }
 

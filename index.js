@@ -201,61 +201,41 @@
 //////console.log(`FTP listening on PORT ${doP} `);
 
 
-//var net = require('net');
-
-//var sockets = [];
-
-//var server = net.createServer(function (socket) {
-//    sockets.push(socket);
-//    socket.on('data', function (data) {
-//        for (var i = 0; i < sockets.length; i++) {
-//            sockets[i].write(data);
-//        }
-//    });
-//    socket.on('end', function () {
-//        var i = sockets.indexOf(socket);
-//        sockets.splice(i, 1);
-//    })
-//});
-
-//var port = process.env.PORT || 5000;
-//console.log("server listening to port " + port);
-//server.listen(port,"0.0.0.0");
 
 
 
-//var fPORT = process.env.PORT || 16868;
-//var Server = require('./tftp/server').Server;
+var fPORT = process.env.PORT || 16868;
+var Server = require('./tftp/server').Server;
 
-//var server = new Server(fPORT);
-//server.listen(function () {
-//    console.log("TFTP server available on %s:%d", server.address().address,server.address().port);
-//});
-
-
-/*jshint node: true*/
+var server = new Server(fPORT);
+server.listen(function () {
+    console.log("TFTP server available on %s:%d", server.address().address,server.address().port);
+});
 
 
-const Server = require('./tftp');
-
-let config = { port: process.env.PORT || 16868, documentRoot:"/"};
-//if (process.argv.length > 2) {
-//    process.argv.forEach((val, index) => {
-//        if (index < 2)
-//            return;
-//        let arr = val.split('=');
-//        switch (arr[0]) {
-//            case '--documentRoot':
-//                config.documentRoot = arr[1];
-//                break;
-//            case '--port':
-//                config.port = arr[1];
-//                break;
-//        }
-//    });
-//}
+///*jshint node: true*/
 
 
-let tftp = new Server(config);
-tftp.run();
+//const Server = require('./tftp');
+
+//let config = { port: process.env.PORT || 16868, documentRoot:"/"};
+////if (process.argv.length > 2) {
+////    process.argv.forEach((val, index) => {
+////        if (index < 2)
+////            return;
+////        let arr = val.split('=');
+////        switch (arr[0]) {
+////            case '--documentRoot':
+////                config.documentRoot = arr[1];
+////                break;
+////            case '--port':
+////                config.port = arr[1];
+////                break;
+////        }
+////    });
+////}
+
+
+//let tftp = new Server(config);
+//tftp.run();
 
