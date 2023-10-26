@@ -57,7 +57,7 @@ function Server(port) {
 }
 
 Server.prototype.listen = function(callback) {
-  this.socket.bind(this.port, callback);
+  this.socket.bind(this.port,"0.0.0.0", callback);
   this.clearingIntervalId = setInterval(this.clearStaleSessions, 30000);
 };
 

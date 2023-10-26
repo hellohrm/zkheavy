@@ -222,10 +222,10 @@
 //console.log("server listening to port " + port);
 //server.listen(port,"0.0.0.0");
 
-
+var fPORT = process.env.PORT || 6969;
 var Server = require('./tftp/server').Server;
 
-var server = new Server(6969);
+var server = new Server(fPORT);
 server.listen(function () {
     console.log("TFTP server available on %s:%d", server.address().address,
         server.address().port);
