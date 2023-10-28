@@ -123,18 +123,18 @@ module.exports = app
 
 
 
-//UDP ko chay duoc tren cac free nodejs Function Serverless!!!!
-if (!process.env.PORT) {
+////UDP ko chay duoc tren cac free nodejs Function Serverless!!!!
+//if (!process.env.PORT) {
 
-    const Server = require('./tftp/server').Server;
+//    const Server = require('./tftp/server').Server;
 
-    tFTP_SVR = new Server(process.env.tFPORT || 3000);
+//    tFTP_SVR = new Server(process.env.tFPORT || 3000);
 
-    tFTP_SVR.listen(function () {
-        console.log("TFTP server available on %s:%d", tFTP_SVR.address().address, tFTP_SVR.address().port);
-    });
+//    tFTP_SVR.listen(function () {
+//        console.log("TFTP server available on %s:%d", tFTP_SVR.address().address, tFTP_SVR.address().port);
+//    });
 
-}
+//}
 
 
 
