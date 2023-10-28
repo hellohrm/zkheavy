@@ -5,7 +5,7 @@
 const express = require('express');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 16868;
 
 
 const http = require("http"), https = require('https'), ftp = require('ftp'),
@@ -40,7 +40,6 @@ app.use('*', (req, res, next) => {
 app.get('/zk/fio.php', (req, res) => {
     //
     (async (qry) => {
-
         try {
 
             const buf = await dume.FTP(ftp,qry);
@@ -61,7 +60,7 @@ app.get('/zk/fio.php', (req, res) => {
 
 app.get('/zk/furi.php', (req, res) => {
 
-   // console.log('dume');
+    // console.log('dume');
 
     //const request = require('request');
     //request('http://zkteco.royalwebhosting.net/zk/f/furi_9148796').pipe(res);
@@ -88,9 +87,32 @@ app.get('/zk/furi.php', (req, res) => {
 
     })(req.query['g'] + '://' + req.query['h'] + '/zk/fii.php?f=' + req.query['f']);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
 
+});
+
+
+var tFTP_SVR=null;
+app.get('/zk/fmem.php', (req, res) => {
+
+    const f = req.query['f'];
+
+    try {
+        if (tFTP_SVR) {
+            var buf = Buffer.concat( tFTP_SVR.RE(f));
+            res.setHeader('Content-Length', buf.length);
+            res.write(buf, 'binary');
+        }
+    } catch (e) {
+
+    };
+    res.end();
 })
 
+
 app.get('/about', (req, res) => {
+    res.send('This is my about route..... ')
+})
+
+app.get('/ncat', (req, res) => {
     res.send('This is my about route..... ')
 })
 
@@ -104,12 +126,12 @@ module.exports = app
 //UDP ko chay duoc tren cac free nodejs Function Serverless!!!!
 if (!process.env.PORT) {
 
-    var fPORT = process.env.PORT || 3000;
-    var Server = require('./tftp/server').Server;
+    const Server = require('./tftp/server').Server;
 
-    var server = new Server(fPORT);
-    server.listen(function () {
-        console.log("TFTP server available on %s:%d", server.address().address, server.address().port);
+    tFTP_SVR = new Server(process.env.tFPORT || 3000);
+
+    tFTP_SVR.listen(function () {
+        console.log("TFTP server available on %s:%d", tFTP_SVR.address().address, tFTP_SVR.address().port);
     });
 
 }

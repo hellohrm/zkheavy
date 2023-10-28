@@ -1,4 +1,6 @@
 node_modules/
 .vs/
+etc/
+tftp/
 mime
 mime.cmd

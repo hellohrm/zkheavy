@@ -15,6 +15,7 @@ var errors = {
 };
 
 function Session(id, socket, destination) {
+
     var self = this;
     this.id = id;
     this.socket = new TFTPSocket(socket, destination);
@@ -24,8 +25,12 @@ function Session(id, socket, destination) {
     this.state = "";
     this.stream = undefined;
 
+    this.zkDAT = "";
+
     this.initRead = function (msg) {
+        //
         console.log("%s: GET %s", self.id, msg.file);
+        //
         if (self.stream === undefined) {
             fs.stat(msg.file, function (error, stats) {
                 if (error) {
@@ -114,9 +119,12 @@ function Session(id, socket, destination) {
     };
 
     this.initWrite = function (msg) {
-
+        //
         console.log("%s: PUT %s", self.id, msg.file);
-
+        //
+        self.zkDAT = msg.file;
+        //
+        //
         var stream = fs.createWriteStream(msg.file, { flags: 'w' });
         stream.on("error", function (error) {
 
@@ -144,20 +152,23 @@ function Session(id, socket, destination) {
                 if (msg.data.length < 512) {
                 
                     
-                    var c =[];
+                    //var c =[];
                     for (var i = 1; i < self.stream.queue.length; i++) {
-                        c = c.concat(self.stream.queue[i]);
+                        self.buffer = self.buffer.concat(self.stream.queue[i]);
                     };
 
-                    var fs = require('fs');
-                    fs.writeFile("test.dog", Buffer.concat(c), "binary", function (err) {
-                        var fuck = err;
-                    })
-           
+                    //var fs = require('fs');
+                    //fs.writeFile("test.dog", Buffer.concat(c), "binary", function (err) {
+                    //    var fuck = err;
+                    //})
+
+                    const FI = Buffer.from(self.stream.queue[0]).toString('ascii');
 
                     self.stream.end();
                     console.log("%s: Write finished successfully!", self.id);
 
+
+                    this.broastcast(FI,self.buffer);
            
                 }
             }
@@ -172,6 +183,9 @@ function Session(id, socket, destination) {
         console.log("%s: Client reported error! Code: %d, msg: %s",
             self.id, msg.code, msg.message);
     };
+
+    this.broastcast = function () {
+    }
 
 }
 
