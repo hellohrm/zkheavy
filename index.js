@@ -2,144 +2,144 @@
 ////////const http = require("http"),
 ////////    https = require('https');
 
-const express = require('express');
+//const express = require('express');
 
-const app = express();
-const PORT = process.env.PORT || 16868;
-
-
-const http = require("http"), https = require('https'), ftp = require('ftp'),
-    dume = require('./mod/zkdog');
-const { debug } = require('console');
+//const app = express();
+//const PORT = process.env.PORT || 16868;
 
 
-app.listen(PORT, () => {
-    console.log(`API listening on PORT ${PORT} `)
-})
+//const http = require("http"), https = require('https'), ftp = require('ftp'),
+//    dume = require('./mod/zkdog');
+//const { debug } = require('console');
 
-//app.all('/', function (req, res, next) {
+
+//app.listen(PORT, () => {
+//    console.log(`API listening on PORT ${PORT} `)
+//})
+
+////app.all('/', function (req, res, next) {
+////    res.header("Access-Control-Allow-Origin", "*");
+////    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+////    next();
+////});
+
+////https://stackoverflow.com/questions/69822482/allow-cross-origins-in-nodejs
+//app.use('*', (req, res, next) => {
+//    // console.log({ message: 'in middleware' });
+//    /* req.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+//    req.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS';
+//    req.headers['Access-Control-Allow-Headers'] =
+//      'Content-Type, Accept, Access-Control-Allow-Origin, Authorization'; */
+
 //    res.header("Access-Control-Allow-Origin", "*");
 //    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+
 //    next();
 //});
 
-//https://stackoverflow.com/questions/69822482/allow-cross-origins-in-nodejs
-app.use('*', (req, res, next) => {
-    // console.log({ message: 'in middleware' });
-    /* req.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
-    req.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS';
-    req.headers['Access-Control-Allow-Headers'] =
-      'Content-Type, Accept, Access-Control-Allow-Origin, Authorization'; */
+//app.get('/zk/fio.php', (req, res) => {
+//    //
+//    (async (qry) => {
+//        try {
 
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//            const buf = await dume.FTP(ftp,qry);
 
-    next();
-});
+//            res.statusCode = 200;
+//            //
+//            res.end(buf, "binary");
 
-app.get('/zk/fio.php', (req, res) => {
-    //
-    (async (qry) => {
-        try {
+//        } catch (e) {
 
-            const buf = await dume.FTP(ftp,qry);
+//        };
 
-            res.statusCode = 200;
-            //
-            res.end(buf, "binary");
+//        res.end();
 
-        } catch (e) {
+//    })(req.query);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
 
-        };
+//})
 
-        res.end();
+//app.get('/zk/furi.php', (req, res) => {
 
-    })(req.query);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
+//    // console.log('dume');
 
-})
+//    //const request = require('request');
+//    //request('http://zkteco.royalwebhosting.net/zk/f/furi_9148796').pipe(res);
 
-app.get('/zk/furi.php', (req, res) => {
+//    //res.send('Hey this is my API running 🥳 do cho chet')
 
-    // console.log('dume');
+//    (async (url) => {
+//        try {
 
-    //const request = require('request');
-    //request('http://zkteco.royalwebhosting.net/zk/f/furi_9148796').pipe(res);
+//            const buf = await dume.httpGet(url, http, https);
+//            //res.writeHead(200, { 'content-type': "text/html" });
+//            //res.end(buf);
+//            //
+//            //res.statusCode = "200";
+//            //res.setHeader("Content-Type", "text/html");
+//            res.setHeader('Content-Length', buf.length);
+//            res.write(buf, 'binary');
 
-    //res.send('Hey this is my API running 🥳 do cho chet')
+//        } catch (e) {
 
-    (async (url) => {
-        try {
+//        };
 
-            const buf = await dume.httpGet(url, http, https);
-            //res.writeHead(200, { 'content-type': "text/html" });
-            //res.end(buf);
-            //
-            //res.statusCode = "200";
-            //res.setHeader("Content-Type", "text/html");
-            res.setHeader('Content-Length', buf.length);
-            res.write(buf, 'binary');
+//        res.end();
 
-        } catch (e) {
+//    })(req.query['g'] + '://' + req.query['h'] + '/zk/fii.php?f=' + req.query['f']);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
 
-        };
-
-        res.end();
-
-    })(req.query['g'] + '://' + req.query['h'] + '/zk/fii.php?f=' + req.query['f']);//('http://zkteco.royalwebhosting.net/zk/f/furi_9148796');
-
-});
+//});
 
 
-var tFTP_SVR=null;
-app.get('/zk/fmem.php', (req, res) => {
+//var tFTP_SVR=null;
+//app.get('/zk/fmem.php', (req, res) => {
 
-    const f = req.query['f'];
+//    const f = req.query['f'];
 
-    try {
-        if (tFTP_SVR) {
-            var buf = Buffer.concat( tFTP_SVR.RE(f));
-            res.setHeader('Content-Length', buf.length);
-            res.write(buf, 'binary');
-        }
-    } catch (e) {
+//    try {
+//        if (tFTP_SVR) {
+//            var buf = Buffer.concat( tFTP_SVR.RE(f));
+//            res.setHeader('Content-Length', buf.length);
+//            res.write(buf, 'binary');
+//        }
+//    } catch (e) {
 
-    };
-    res.end();
-})
+//    };
+//    res.end();
+//})
 
 
-app.get('/about', (req, res) => {
-    res.send('This is my about route..... ')
-})
+//app.get('/about', (req, res) => {
+//    res.send('This is my about route..... ')
+//})
 
-app.get('/ncat', (req, res) => {
-    res.send('This is my about route..... ')
-})
+//app.get('/ncat', (req, res) => {
+//    res.send('This is my about route..... ')
+//})
 
-// Export the Express API
-module.exports = app
+//// Export the Express API
+//module.exports = app
 
 
 
 
 
-//UDP ko chay duoc tren cac free nodejs Function Serverless!!!!
-if (!process.env.PORT) {
+////UDP ko chay duoc tren cac free nodejs Function Serverless!!!!
+//if (!process.env.PORT) {
 
-    const Server = require('./tftp/server').Server;
+//    const Server = require('./tftp/server').Server;
 
-    tFTP_SVR = new Server(process.env.tFPORT || 3000);
+//    tFTP_SVR = new Server(process.env.tFPORT || 3000);
 
-    tFTP_SVR.listen(function () {
-        console.log("TFTP server available on %s:%d", tFTP_SVR.address().address, tFTP_SVR.address().port);
-    });
+//    tFTP_SVR.listen(function () {
+//        console.log("TFTP server available on %s:%d", tFTP_SVR.address().address, tFTP_SVR.address().port);
+//    });
 
-}
-
-
+//}
 
 
-const doP = process.env.FTP || 2121, 
+
+
+const doP = process.env.FTP || 8000, 
 
     FTP_UA = "123456789",
     sessionU = function (U, P, mod, evtEND) {
