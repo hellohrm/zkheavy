@@ -87,6 +87,7 @@ function FTP(ftp,QRY) {
                     c.end();
                     //res.end();
                     resolve([]);
+                    return;
                 };
 
                 RES.once('close', function () {
