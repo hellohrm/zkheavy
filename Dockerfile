@@ -1,7 +1,7 @@
 FROM php:apache
 
 WORKDIR /var/www/html
-COPY web .
+COPY koyeb_web_php
 
 ENV PORT=8000
 EXPOSE ${PORT}
